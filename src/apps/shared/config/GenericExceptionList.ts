@@ -7,9 +7,25 @@ import {
     UnauthorizedException
 } from '@nestjs/common';
 import { HttpErrorCodesConstants } from '../../../contexts/shared/domain/constants/HttpErrorCodesConstants';
+import { EmailNotValidException } from '../../../contexts/user/domain/exceptions/EmailNotValidException';
 
 export abstract class GenericExceptionList extends HttpExceptionFilter {
     public readonly exceptions = [
+        {
+            instance: BadRequestException,
+            status: HttpStatus.BAD_REQUEST,
+            code: HttpErrorCodesConstants.BAD_REQUEST,
+        },
+        {
+            instance: EmailNotValidException,
+            status: HttpStatus.BAD_REQUEST,
+            code: HttpErrorCodesConstants.EMAIL_NOT_VALID,
+        },
+        {
+            instance: ForbiddenException,
+            status: HttpStatus.FORBIDDEN,
+            code: HttpErrorCodesConstants.FORBIDDEN,
+        },
         {
             instance: InternalServerErrorException,
             status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -19,16 +35,6 @@ export abstract class GenericExceptionList extends HttpExceptionFilter {
             instance: UnauthorizedException,
             status: HttpStatus.UNAUTHORIZED,
             code: HttpErrorCodesConstants.UNAUTHORIZED,
-        },
-        {
-            instance: ForbiddenException,
-            status: HttpStatus.FORBIDDEN,
-            code: HttpErrorCodesConstants.FORBIDDEN,
-        },
-        {
-            instance: BadRequestException,
-            status: HttpStatus.BAD_REQUEST,
-            code: HttpErrorCodesConstants.BAD_REQUEST,
         },
     ];
 }
