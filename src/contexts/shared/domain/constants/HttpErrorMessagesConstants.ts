@@ -1,3 +1,7 @@
-export enum HttpErrorMessagesConstants{
-  EMAIL_NOT_VALID= 'EMAIL_NOT_VALID',
+export enum HttpErrorMessagesConstants {
+  EMAIL_NOT_VALID = 'EMAIL_NOT_VALID',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+  USER_FOUND = 'USER_FOUND',
+  INACTIVE_USER = 'INACTIVE_USER',
+  USER_NOT_FOUND = 'USER_NOT_FOUND',
 }

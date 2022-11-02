@@ -5,6 +5,7 @@ import { HttpErrorMessagesConstants } from '../../shared/domain/constants/HttpEr
 export class Email extends StringValueObject {
     constructor(value: string) {
         super(value);
+        Email.ensureIsValidParam(value);
     }
 
     private static ensureIsValidParam(value: string): void {
