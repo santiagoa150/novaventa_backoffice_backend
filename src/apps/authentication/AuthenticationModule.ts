@@ -9,10 +9,14 @@ import { LoginAppProvider } from './config/AuthenticationProvider';
 import { BuildPayloadCommandHandler } from '../../contexts/authentication/application/login/BuildPayloadCommandHandler';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { MeGetController } from './controllers/me/MeGetController';
+import { MeQueryHandler } from '../../contexts/authentication/application/me/MeQueryHandler';
+import { JwtStrategy } from '../../contexts/shared/infrastructure/auth/strategies/jwt/JwtStrategy';
 
 const commandHandlers = [
     LoginCommandHandler,
     BuildPayloadCommandHandler,
+    MeQueryHandler,
 ];
 
 const queryHandlers = [];
@@ -30,11 +34,13 @@ const queryHandlers = [];
     ],
     controllers: [
         LoginPostController,
+        MeGetController,
     ],
     providers: [
         ...commandHandlers,
         ...queryHandlers,
         LocalStrategy,
+        JwtStrategy,
         LoginAppProvider,
     ]
 })

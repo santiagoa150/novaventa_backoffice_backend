@@ -1,5 +1,5 @@
 export interface IOptionsApp{
-  throwExceptionIfExists: boolean;
-  throwExceptionIfNoExists: boolean;
+  throwExceptionIfExists?: boolean;
+  throwExceptionIfNoExists?: boolean;
 
 }

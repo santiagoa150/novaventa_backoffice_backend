@@ -22,7 +22,7 @@ export class SearchUserByEmailApp {
             this.logger.error(`[${this.execute.name}] ERROR :: ${HttpErrorMessagesConstants.USER_FOUND}`);
             throw new UserFoundException(HttpErrorMessagesConstants.USER_FOUND);
         }
-        if (user && options && options.throwExceptionIfNoExists){
+        if (!user && options && options.throwExceptionIfNoExists){
             this.logger.error(`[${this.execute.name}] ERROR :: ${HttpErrorMessagesConstants.USER_NOT_FOUND}`);
             throw new UserFoundException(HttpErrorMessagesConstants.USER_NOT_FOUND);
         }
