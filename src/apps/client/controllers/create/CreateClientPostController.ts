@@ -24,6 +24,7 @@ export class CreateClientPostController extends ApiController {
     @Body() body: CreateClientPostControllerRequest,
     @User() user: IUserDecorator
     ): Promise<CreateClientPostControllerResponse> {
+        this.logger.log(`[${this.execute.name}] INIT ::`);
         const response = new CreateClientPostControllerResponse();
         await this.dispatch(new CreateClientCommand(
             user.userId,
@@ -31,6 +32,7 @@ export class CreateClientPostController extends ApiController {
             body.phone,
             body.description
         ));
+        this.logger.log(`[${this.execute.name}] FINISH ::`);
         return response;
     }
 }

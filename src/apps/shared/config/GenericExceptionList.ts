@@ -10,6 +10,10 @@ import { HttpErrorCodesConstants } from '../../../contexts/shared/domain/constan
 import { EmailNotValidException } from '../../../contexts/user/domain/exceptions/EmailNotValidException';
 import { UserFoundException } from '../../../contexts/user/domain/exceptions/UserFoundException';
 import { UserNotFoundException } from '../../../contexts/user/domain/exceptions/UserNotFoundException';
+import {
+    InvalidPaginationParamException
+} from '../../../contexts/shared/domain/exceptions/InvalidPaginationParamException';
+import { InvalidSearchParamException } from '../../../contexts/shared/domain/exceptions/InvalidSearchParamException';
 
 export abstract class GenericExceptionList extends HttpExceptionFilter {
     public readonly exceptions = [
@@ -32,6 +36,16 @@ export abstract class GenericExceptionList extends HttpExceptionFilter {
             instance: InternalServerErrorException,
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             code: HttpErrorCodesConstants.INTERNAL_SERVER_ERROR
+        },
+        {
+            instance: InvalidPaginationParamException,
+            status: HttpStatus.BAD_REQUEST,
+            code: HttpErrorCodesConstants.INVALID_PAGINATION_PARAM,  
+        },
+        {
+            instance: InvalidSearchParamException,
+            status: HttpStatus.BAD_REQUEST,
+            code: HttpErrorCodesConstants.INVALID_SEARCH_PARAM,
         },
         {
             instance: UnauthorizedException,

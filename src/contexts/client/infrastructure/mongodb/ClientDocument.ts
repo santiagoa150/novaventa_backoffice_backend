@@ -28,4 +28,4 @@ export const ClientSchema = new Schema({
         type: String,
         default: '',
     }
-});
+}, {timestamps: true});

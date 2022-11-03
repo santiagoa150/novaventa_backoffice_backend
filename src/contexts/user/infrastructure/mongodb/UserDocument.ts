@@ -31,4 +31,4 @@ export const UserSchema = new Schema({
         required:true,
         default: true,
     }
-});
+}, {timestamps: true});
