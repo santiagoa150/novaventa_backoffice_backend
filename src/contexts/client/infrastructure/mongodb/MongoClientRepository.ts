@@ -28,9 +28,7 @@ export class MongoClientRepository implements IClientRepository {
         const query = MongoDbUtils.buildPaginatedQuery(filters, page, limit);
         this.logger.log(`[${this.search.name}] query: ${JSON.stringify(query, null, 2)}`);
         const aggregateResponse: any = await this.clientModel.aggregate(query);
-        console.log(aggregateResponse);
         const clientsFound = aggregateResponse && aggregateResponse.length > 0 ? aggregateResponse[0] : [];
-        console.log(clientsFound);
         result.data = clientsFound && clientsFound.data ? clientsFound.data.map(c => Client.fromPrimitives(c)) : [];
         result.metadata = clientsFound && clientsFound.metadata ? clientsFound.metadata : { page: 0, total: 0, totalPages: 0};
         this.logger.log(`[${this.search.name}] FINISH ::`);
@@ -51,6 +49,17 @@ export class MongoClientRepository implements IClientRepository {
         await model.save();
         const clientMapped = model ? Client.fromPrimitives(model) : null;
         this.logger.log(`[${this.create.name}] FINISH ::`);
+        return clientMapped;
+    }
+
+    async update(client: ClientDto): Promise<Client> {
+        this.logger.log(`[${this.update.name}] INIT :: client: ${JSON.stringify(client, null, 2)}`);
+        const clientUpdated = await this.clientModel.findOneAndUpdate({
+            userId: client.userId.toString(),
+            clientId: client.clientId.toString(),
+        }, client, {new: true});
+        const clientMapped = clientUpdated? Client.fromPrimitives(clientUpdated) : null;
+        this.logger.log(`[${this.update.name}] FINISH ::`);
         return clientMapped;
     }
 }

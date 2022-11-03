@@ -4,6 +4,7 @@ import { MongoClientRepository } from '../../../contexts/client/infrastructure/m
 import { MongoDbConstantsProvider } from '../../../contexts/shared/infrastructure/mongodb/MongoDbConstantsProvider';
 import { SearchAllClientsApp } from '../../../contexts/client/application/search/all/SearchAllClientsApp';
 import { SearchClientByIdApp } from '../../../contexts/client/application/search/by-id/SearchClientByIdApp';
+import { UpdateClientApp } from '../../../contexts/client/application/update/UpdateClientApp';
 
 export const CreateClientAppProvider: NestFactoryProvider = {
     provide: CreateClientApp,
@@ -36,5 +37,19 @@ export const SearchAllClientsAppProvider: NestFactoryProvider = {
     },
     inject: [
         MongoDbConstantsProvider.CLIENT_SCHEMA
+    ]
+};
+
+export const UpdateClientAppProvider: NestFactoryProvider = {
+    provide: UpdateClientApp,
+    useFactory: (searchClientByIdApp: SearchClientByIdApp, clientSchema) => {
+        return new UpdateClientApp(
+            searchClientByIdApp,
+            new MongoClientRepository(clientSchema),
+        );
+    },
+    inject: [
+        SearchClientByIdApp,
+        MongoDbConstantsProvider.CLIENT_SCHEMA,
     ]
 };

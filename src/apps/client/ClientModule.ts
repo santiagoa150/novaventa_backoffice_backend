@@ -7,7 +7,8 @@ import { CreateClientCommandHandler } from '../../contexts/client/application/cr
 import {
     CreateClientAppProvider,
     SearchAllClientsAppProvider,
-    SearchClientByIdAppProvider
+    SearchClientByIdAppProvider,
+    UpdateClientAppProvider
 } from './config/ClientProvider';
 import { SearchAllClientsGetController } from './controllers/search/all/SearchAllClientsGetController';
 import {
@@ -17,25 +18,29 @@ import { SearchClientByIdGetController } from './controllers/search/by-id/Search
 import {
     SearchClientByIdQueryHandler
 } from '../../contexts/client/application/search/by-id/SearchClientByIdQueryHandler';
+import { UpdateClientPutController } from './controllers/update/UpdateClientPutController';
+import { UpdateClientCommandHandler } from '../../contexts/client/application/update/UpdateClientCommandHandler';
 
 const commandHandlers = [
     CreateClientCommandHandler,
+    UpdateClientCommandHandler
 ];
 
 const queryHandlers = [
     SearchClientByIdQueryHandler,
-    SearchAllClientsQueryHandler,
+    SearchAllClientsQueryHandler
 ];
 
 @Module({
     imports: [
         MongoDbConnectionModule,
-        CqrsModule,
+        CqrsModule
     ],
     controllers: [
         CreateClientPostController,
         SearchClientByIdGetController,
         SearchAllClientsGetController,
+        UpdateClientPutController
     ],
     providers: [
         ...commandHandlers,
@@ -44,6 +49,7 @@ const queryHandlers = [
         CreateClientAppProvider,
         SearchClientByIdAppProvider,
         SearchAllClientsAppProvider,
+        UpdateClientAppProvider
     ]
 })
 export class ClientModule {

@@ -9,8 +9,10 @@ import { ClientId } from './ClientId';
 export interface IClientRepository {
   
   search(filters?: Array<SearchFilterObject>, page?: PaginationParamObject, limit?: PaginationParamObject): Promise<PaginationResponse<Client>>;
-  
+
   searchById(userId: UserId, clientId: ClientId): Promise<Client>;
   
   create(client: ClientDto): Promise<Client>;
+
+  update(client: ClientDto): Promise<Client>;
 }

@@ -5,6 +5,7 @@ import { HttpErrorCodesConstants } from '../../../contexts/shared/domain/constan
 import { ClientNotCreatedException } from '../../../contexts/client/domain/exceptions/ClientNotCreatedException';
 import { ClientNotFoundException } from '../../../contexts/client/domain/exceptions/ClientNotFoundException';
 import { ClientFoundException } from '../../../contexts/client/domain/exceptions/ClientFoundException';
+import { ClientNotUpdatedException } from '../../../contexts/client/domain/exceptions/ClientNotUpdatedException';
 
 export class ClientExceptionFilter extends GenericExceptionList {
     resolveStatus(exception: HttpException): ResolveStatusInterface {
@@ -23,6 +24,11 @@ export class ClientExceptionFilter extends GenericExceptionList {
                 instance: ClientNotFoundException,
                 status: HttpStatus.NOT_FOUND,
                 code: HttpErrorCodesConstants.CLIENT_NOT_FOUND,
+            },
+            {
+                instance: ClientNotUpdatedException,
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                code: HttpErrorCodesConstants.CLIENT_NOT_UPDATED,
             }
         ]
             .concat(this.exceptions);
