@@ -3,6 +3,7 @@ import { CreateClientApp } from '../../../contexts/client/application/create/Cre
 import { MongoClientRepository } from '../../../contexts/client/infrastructure/mongodb/MongoClientRepository';
 import { MongoDbConstantsProvider } from '../../../contexts/shared/infrastructure/mongodb/MongoDbConstantsProvider';
 import { SearchAllClientsApp } from '../../../contexts/client/application/search/all/SearchAllClientsApp';
+import { SearchClientByIdApp } from '../../../contexts/client/application/search/by-id/SearchClientByIdApp';
 
 export const CreateClientAppProvider: NestFactoryProvider = {
     provide: CreateClientApp,
@@ -14,6 +15,16 @@ export const CreateClientAppProvider: NestFactoryProvider = {
     inject: [
         MongoDbConstantsProvider.CLIENT_SCHEMA
     ]
+};
+
+export const SearchClientByIdAppProvider: NestFactoryProvider = {
+    provide: SearchClientByIdApp,
+    useFactory: (clientSchema) => {
+        return new SearchClientByIdApp(
+            new MongoClientRepository(clientSchema),
+        );
+    },
+    inject: [MongoDbConstantsProvider.CLIENT_SCHEMA]
 };
 
 export const SearchAllClientsAppProvider: NestFactoryProvider = {

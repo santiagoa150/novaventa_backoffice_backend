@@ -10,6 +10,8 @@ import { SearchFilterObject } from '../../../shared/domain/value-object/SearchFi
 import { PaginationParamObject } from '../../../shared/domain/value-object/PaginationParamObject';
 import { MongoDbUtils } from '../../../shared/infrastructure/mongodb/MongoDbUtils';
 import { PaginationResponse } from '../../../shared/domain/PaginationResponse';
+import { UserId } from '../../../user/domain/UserId';
+import { ClientId } from '../../domain/ClientId';
 
 export class MongoClientRepository implements IClientRepository {
 
@@ -33,6 +35,14 @@ export class MongoClientRepository implements IClientRepository {
         result.metadata = clientsFound && clientsFound.metadata ? clientsFound.metadata : { page: 0, total: 0, totalPages: 0};
         this.logger.log(`[${this.search.name}] FINISH ::`);
         return result;
+    }
+
+    async searchById(userId: UserId, clientId: ClientId): Promise<Client> {
+        this.logger.log(`[${this.searchById.name}] INIT :: userId: ${userId.toString()}, clientId: ${clientId.toString()}`);
+        const clientFound = await this.clientModel.findOne({userId: userId.toString(), clientId: clientId.toString()});
+        const clientMapped =clientFound ? Client.fromPrimitives(clientFound) : null;
+        this.logger.log(`[${this.searchById.name}] FINISH ::`);
+        return clientMapped;
     }
 
     async create(client: ClientDto): Promise<Client> {

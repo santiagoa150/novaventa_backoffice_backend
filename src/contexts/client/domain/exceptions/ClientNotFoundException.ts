@@ -1,0 +1,1 @@
+export class ClientNotFoundException extends Error{}
