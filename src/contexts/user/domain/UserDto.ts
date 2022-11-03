@@ -11,7 +11,7 @@ export class UserDto {
 
   @ApiProperty()
   @IsString({ message: ValidationMessagesConstants.USER_NAME_MUST_BE_STRING })
-  @IsNotEmpty({ message: ValidationMessagesConstants.USER_ID_REQUIRED })
+  @IsNotEmpty({ message: ValidationMessagesConstants.USER_NAME_REQUIRED })
       name: string;
 
   @ApiProperty()

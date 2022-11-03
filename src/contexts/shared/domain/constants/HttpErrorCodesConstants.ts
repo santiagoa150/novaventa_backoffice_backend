@@ -7,4 +7,5 @@ export enum HttpErrorCodesConstants{
   PASSWORD_NOT_VALID = 11,
   USER_FOUND = 12,
   USER_NOT_FOUND = 13,
+  CLIENT_NOT_CREATED = 14,
 }

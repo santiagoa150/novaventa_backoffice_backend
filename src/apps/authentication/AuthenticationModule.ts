@@ -42,6 +42,9 @@ const queryHandlers = [];
         LocalStrategy,
         JwtStrategy,
         LoginAppProvider,
+    ],
+    exports: [
+        JwtStrategy,
     ]
 })
 export class AuthenticationModule {
