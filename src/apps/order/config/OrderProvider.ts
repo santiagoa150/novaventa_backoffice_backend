@@ -4,6 +4,7 @@ import { MongoOrderRepository } from '../../../contexts/order/infrastructure/mon
 import { MongoDbConstantsProvider } from '../../../contexts/shared/infrastructure/mongodb/MongoDbConstantsProvider';
 import { SearchOrderByStatusApp } from '../../../contexts/order/application/search/by-status/SearchOrderByStatusApp';
 import { SearchOrderByDateApp } from '../../../contexts/order/application/search/by-date/SearchOrderByDateApp';
+import { SearchAllOrdersApp } from '../../../contexts/order/application/search/all/SearchAllOrdersApp';
 
 export const SearchOrderByStatusAppProvider: NestFactoryProvider = {
     provide: SearchOrderByStatusApp,
@@ -26,6 +27,18 @@ export const SearchOrderByDateAppProvider: NestFactoryProvider = {
     },
     inject: [
         MongoDbConstantsProvider.ORDER_SCHEMA
+    ]
+};
+
+export const SearchAllOrdersAppProvider: NestFactoryProvider = {
+    provide: SearchAllOrdersApp,
+    useFactory: (orderSchema) => {
+        return new SearchAllOrdersApp(
+            new MongoOrderRepository(orderSchema),
+        );
+    },
+    inject: [
+        MongoDbConstantsProvider.ORDER_SCHEMA,
     ]
 };
 

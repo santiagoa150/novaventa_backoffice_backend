@@ -8,6 +8,10 @@ import { OrderDto } from '../../domain/OrderDto';
 import { Order } from '../../domain/Order';
 import { UserId } from '../../../user/domain/UserId';
 import { OrderStatus } from '../../domain/OrderStatus';
+import { SearchFilterObject } from '../../../shared/domain/value-object/SearchFilterObject';
+import { PaginationParamObject } from '../../../shared/domain/value-object/PaginationParamObject';
+import { PaginationResponse } from '../../../shared/domain/PaginationResponse';
+import { MongoDbUtils } from '../../../shared/infrastructure/mongodb/MongoDbUtils';
 
 export class MongoOrderRepository implements IOrderRepository {
 
@@ -27,9 +31,22 @@ export class MongoOrderRepository implements IOrderRepository {
         return orderMapped;
     }
 
+    async search(filters?: Array<SearchFilterObject>, page?: PaginationParamObject, limit?: PaginationParamObject): Promise<PaginationResponse<Order>> {
+        this.logger.log(`[${this.search.name}] INIT ::`);
+        const result = new PaginationResponse<Order>();
+        const query = MongoDbUtils.buildPaginatedQuery(filters, page, limit);
+        this.logger.log(`[${this.search.name}] query: ${JSON.stringify(query, null, 2)}`);
+        const aggregateResponse: any = await this.orderModel.aggregate(query);
+        const ordersFound = aggregateResponse && aggregateResponse.length > 0 ? aggregateResponse[0] : [];
+        result.data = ordersFound && ordersFound.data ? ordersFound.data.map(o => Order.fromPrimitives(o)) : [];
+        result.metadata = ordersFound && ordersFound.metadata ? ordersFound.metadata : { page: 0, total: 0, totalPages: 0 };
+        this.logger.log(`[${this.search.name}] FINISH ::`);
+        return result;
+    }
+
     async searchByStatus(userId: UserId, status: OrderStatus): Promise<Order> {
         this.logger.log(`[${this.searchByStatus.name}] INIT :: userId: ${userId.toString()} status: ${status.toString()}`);
-        const orderFound = await this.orderModel.findOne({status: status.toString(), userId: userId.toString()});
+        const orderFound = await this.orderModel.findOne({ status: status.toString(), userId: userId.toString() });
         const orderMapped = orderFound ? Order.fromPrimitives(orderFound) : null;
         this.logger.log(`[${this.searchByStatus.name}] FINISH ::`);
         return orderMapped;
@@ -44,5 +61,6 @@ export class MongoOrderRepository implements IOrderRepository {
         });
         const orderMapped = orderFound ? Order.fromPrimitives(orderFound) : null;
         this.logger.log(`[${this.searchByStatus.name}] FINISH ::`);
-        return orderMapped;    }
+        return orderMapped;
+    }
 }

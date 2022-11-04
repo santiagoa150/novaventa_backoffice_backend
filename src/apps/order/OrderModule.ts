@@ -6,16 +6,20 @@ import { OrderDocumentProvider } from '../../contexts/order/infrastructure/mongo
 import { CreateOrderPostController } from './controllers/create/CreateOrderPostController';
 import { CreateOrderCommandHandler } from '../../contexts/order/application/create/CreateOrderCommandHandler';
 import {
-    CreateOrderAppProvider,
+    CreateOrderAppProvider, SearchAllOrdersAppProvider,
     SearchOrderByDateAppProvider,
     SearchOrderByStatusAppProvider
 } from './config/OrderProvider';
+import { SearchAllOrdersGetController } from './controllers/search/all/SearchAllOrdersGetController';
+import { SearchAllOrdersQueryHandler } from '../../contexts/order/application/search/all/SearchAllOrdersQueryHandler';
 
 const commandHandlers = [
     CreateOrderCommandHandler,
 ];
 
-const queryHandlers = [];
+const queryHandlers = [
+    SearchAllOrdersQueryHandler,
+];
 
 @Module({
     imports: [
@@ -25,6 +29,7 @@ const queryHandlers = [];
     ],
     controllers: [
         CreateOrderPostController,
+        SearchAllOrdersGetController,
     ],
     providers: [
         ...commandHandlers,
@@ -32,6 +37,7 @@ const queryHandlers = [];
         ...OrderDocumentProvider,
         SearchOrderByStatusAppProvider,
         SearchOrderByDateAppProvider,
+        SearchAllOrdersAppProvider,
         CreateOrderAppProvider,
     ]
 })
