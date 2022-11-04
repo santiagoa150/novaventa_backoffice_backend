@@ -8,6 +8,7 @@ export enum HttpErrorCodesConstants{
   USER_FOUND = 12,
   USER_NOT_FOUND = 13,
 
+  INVALID_ORDER_STATUS = 20,
   INVALID_PAGINATION_PARAM = 15,
   INVALID_SEARCH_PARAM = 16,
 

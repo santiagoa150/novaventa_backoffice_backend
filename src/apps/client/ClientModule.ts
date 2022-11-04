@@ -20,6 +20,7 @@ import {
 } from '../../contexts/client/application/search/by-id/SearchClientByIdQueryHandler';
 import { UpdateClientPutController } from './controllers/update/UpdateClientPutController';
 import { UpdateClientCommandHandler } from '../../contexts/client/application/update/UpdateClientCommandHandler';
+import { AuthenticationModule } from '../authentication/AuthenticationModule';
 
 const commandHandlers = [
     CreateClientCommandHandler,
@@ -34,7 +35,8 @@ const queryHandlers = [
 @Module({
     imports: [
         MongoDbConnectionModule,
-        CqrsModule
+        CqrsModule,
+        AuthenticationModule,
     ],
     controllers: [
         CreateClientPostController,
