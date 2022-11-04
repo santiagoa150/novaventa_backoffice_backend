@@ -12,6 +12,7 @@ import {
 } from './config/OrderProvider';
 import { SearchAllOrdersGetController } from './controllers/search/all/SearchAllOrdersGetController';
 import { SearchAllOrdersQueryHandler } from '../../contexts/order/application/search/all/SearchAllOrdersQueryHandler';
+import { SearchOrderByStatusApp } from '../../contexts/order/application/search/by-status/SearchOrderByStatusApp';
 
 const commandHandlers = [
     CreateOrderCommandHandler,
@@ -39,6 +40,9 @@ const queryHandlers = [
         SearchOrderByDateAppProvider,
         SearchAllOrdersAppProvider,
         CreateOrderAppProvider,
+    ],
+    exports: [
+        SearchOrderByStatusApp,
     ]
 })
 export class OrderModule {

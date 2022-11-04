@@ -7,6 +7,7 @@ import { UserId } from '../../../user/domain/UserId';
 import { ClientId } from '../../../client/domain/ClientId';
 import { SearchProductByCodeApp } from '../search/by-code/SearchProductByCodeApp';
 import { UpdateProductQuantityApp } from '../update/quantity/UpdateProductQuantityApp';
+import { OrderId } from '../../../order/domain/OrderId';
 
 @CommandHandler(CreateProductCommand)
 export class CreateProductCommandHandler implements ICommandHandler<CreateProductCommand> {
@@ -25,11 +26,13 @@ export class CreateProductCommandHandler implements ICommandHandler<CreateProduc
         const { code, quantity } = command;
         const userId = new UserId(command.userId);
         const clientId = new ClientId(command.clientId);
-        const product = await this.searchProductByCodeApp.execute(userId, clientId, code);
+        const orderId = new OrderId(command.orderId);
+        const product = await this.searchProductByCodeApp.execute(userId, clientId, orderId, code);
         if (!product) {
             const newProduct = await this.createProductApp.execute(
                 userId,
                 clientId,
+                orderId,
                 command.name,
                 command.catalogPrice,
                 command.listPrice,
@@ -44,6 +47,7 @@ export class CreateProductCommandHandler implements ICommandHandler<CreateProduc
                 userId,
                 clientId,
                 product.productId,
+                orderId,
                 product.quantity + quantity,
                 product,
                 {throwExceptionIfCantUpdate: true},

@@ -9,6 +9,11 @@ import { IProductRepository } from '../../domain/IProductRepository';
 import { IOptionsApp } from '../../../shared/domain/interfaces/IOptionsApp';
 import { ProductNotCreatedException } from '../../domain/exceptions/ProductNotCreatedException';
 import { HttpErrorMessagesConstants } from '../../../shared/domain/constants/HttpErrorMessagesConstants';
+import { OrderId } from '../../../order/domain/OrderId';
+import { SearchOrderByStatusApp } from '../../../order/application/search/by-status/SearchOrderByStatusApp';
+import { OrderStatus } from '../../../order/domain/OrderStatus';
+import { OrderStatusConstants } from '../../../order/domain/OrderStatusConstants';
+import { InvalidOrderIdException } from '../../../order/domain/exception/InvalidOrderIdException';
 
 export class CreateProductApp {
 
@@ -16,17 +21,23 @@ export class CreateProductApp {
 
     constructor(
     private readonly searchClientByIdApp: SearchClientByIdApp,
+    private readonly searchOrderByStatusApp: SearchOrderByStatusApp,
     private readonly repository: IProductRepository
     ) {
     }
 
-    async execute(userId: UserId, clientId: ClientId, name: string, catalogPrice: number, listPrice: number, quantity: number, code: string,
+    async execute(userId: UserId, clientId: ClientId, orderId: OrderId, name: string, catalogPrice: number, listPrice: number, quantity: number, code: string,
         imageUrl: string, options?: IOptionsApp): Promise<Product> {
         this.logger.log(`[${this.execute.name}] INIT :: userId: ${userId.toString()} clientId: ${clientId.toString()} code: ${code} quantity: ${quantity}`);
         await this.searchClientByIdApp.execute(userId, clientId, { throwExceptionIfNoExists: true });
-        const template = await this.mapProduct(userId, clientId, name, catalogPrice, listPrice, quantity, code, imageUrl);
+        const order = (await this.searchOrderByStatusApp.execute(userId, new OrderStatus(OrderStatusConstants.PENDING), {throwExceptionIfNoExists: true})).toPrimitives();
+        if (order.orderId !== orderId.toString()){
+            this.logger.error(`[${this.execute.name}] ERROR :: ${HttpErrorMessagesConstants.INVALID_ORDER_ID}`);
+            throw new InvalidOrderIdException(HttpErrorMessagesConstants.INVALID_ORDER_ID);
+        }
+        const template = await this.mapProduct(userId, clientId, orderId, name, catalogPrice, listPrice, quantity, code, imageUrl);
         const product = await this.repository.create(template);
-        if(!product && options && options.throwExceptionIfCantCreate){
+        if (!product && options && options.throwExceptionIfCantCreate) {
             this.logger.error(`[${this.execute.name}] ERROR :: ${HttpErrorMessagesConstants.PRODUCT_NOT_CREATED}`);
             throw new ProductNotCreatedException(HttpErrorMessagesConstants.PRODUCT_NOT_CREATED);
         }
@@ -34,12 +45,13 @@ export class CreateProductApp {
         return product;
     }
 
-    async mapProduct(userId: UserId, clientId: ClientId, name: string, catalogPrice: number, listPrice: number, quantity: number, code: string,
+    async mapProduct(userId: UserId, clientId: ClientId, orderId: OrderId, name: string, catalogPrice: number, listPrice: number, quantity: number, code: string,
         imageUrl: string): Promise<ProductDto> {
         this.logger.log(`[${this.execute.name}] INIT :: userId: ${userId.toString()} clientId: ${clientId.toString()} code: ${code}`);
         const product: ProductDto = {
             catalogPrice: catalogPrice,
             clientId: clientId.toString(),
+            orderId: orderId.toString(),
             code: code,
             imageUrl: imageUrl,
             listPrice: listPrice,

@@ -9,6 +9,7 @@ import { Product } from '../../domain/Product';
 import { UserId } from '../../../user/domain/UserId';
 import { ClientId } from '../../../client/domain/ClientId';
 import { ProductId } from '../../domain/ProductId';
+import { OrderId } from '../../../order/domain/OrderId';
 
 export class MongoProductRepository implements IProductRepository {
 
@@ -41,11 +42,12 @@ export class MongoProductRepository implements IProductRepository {
         return productMapped;
     }
 
-    async searchByCode(userId: UserId, clientId: ClientId, code: string): Promise<Product> {
+    async searchByCode(userId: UserId, clientId: ClientId, orderId: OrderId, code: string): Promise<Product> {
         this.logger.log(`[${this.searchByCode.name}] INIT :: userId: ${userId.toString()}, clientId: ${clientId.toString()}`);
         const productFound = await this.productModel.findOne({
             userId: userId.toString(),
             clientId: clientId.toString(),
+            orderId: orderId.toString(),
             code: code
         });
         const productMapped = productFound ? Product.fromPrimitives(productFound) : null;
@@ -53,12 +55,13 @@ export class MongoProductRepository implements IProductRepository {
         return productMapped;
     }
 
-    async searchById(userId: UserId, clientId: ClientId, productId: ProductId): Promise<Product> {
+    async searchById(userId: UserId, clientId: ClientId, orderId: OrderId, productId: ProductId): Promise<Product> {
         this.logger.log(`[${this.searchByCode.name}] INIT :: userId: ${userId.toString()}, clientId: ${clientId.toString()}, productId: ${productId.toString()}`);
         const productFound = await this.productModel.findOne({
             userId: userId.toString(),
             clientId: clientId.toString(),
-            productId: productId.toString()
+            productId: productId.toString(),
+            orderId: orderId.toString(),
         });
         const productMapped = productFound ? Product.fromPrimitives(productFound) : null;
         this.logger.log(`[${this.searchByCode.name}] FINISH ::`);

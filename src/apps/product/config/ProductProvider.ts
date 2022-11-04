@@ -8,6 +8,7 @@ import { SearchProductByIdApp } from '../../../contexts/product/application/sear
 import {
     UpdateProductQuantityApp
 } from '../../../contexts/product/application/update/quantity/UpdateProductQuantityApp';
+import { SearchOrderByStatusApp } from '../../../contexts/order/application/search/by-status/SearchOrderByStatusApp';
 
 export const SearchProductByCodeAppProvider: NestFactoryProvider = {
     provide: SearchProductByCodeApp,
@@ -35,28 +36,40 @@ export const SearchProductByIdAppProvider: NestFactoryProvider = {
 
 export const UpdateProductQuantityAppProvider: NestFactoryProvider = {
     provide: UpdateProductQuantityApp,
-    useFactory: (searchProductByIdApp: SearchProductByIdApp, productSchema) => {
+    useFactory: (
+        searchProductByIdApp: SearchProductByIdApp,
+        searchOrderByStatusApp: SearchOrderByStatusApp,
+        productSchema
+    ) => {
         return new UpdateProductQuantityApp(
             searchProductByIdApp,
+            searchOrderByStatusApp,
             new MongoProductRepository(productSchema),
         );
     },
     inject: [
         SearchProductByIdApp,
+        SearchOrderByStatusApp,
         MongoDbConstantsProvider.PRODUCT_SCHEMA,
     ]
 };
 
 export const CreateProductAppProvider: NestFactoryProvider = {
     provide: CreateProductApp,
-    useFactory: (searchClientByIdApp: SearchClientByIdApp, productSchema) => {
+    useFactory: (
+        searchClientByIdApp: SearchClientByIdApp, 
+        searchOrderByStatusApp: SearchOrderByStatusApp,
+        productSchema
+    ) => {
         return new CreateProductApp(
             searchClientByIdApp,
+            searchOrderByStatusApp,
             new MongoProductRepository(productSchema),
         );
     },
     inject: [
         SearchClientByIdApp,
+        SearchOrderByStatusApp,
         MongoDbConstantsProvider.PRODUCT_SCHEMA,
     ]
 };

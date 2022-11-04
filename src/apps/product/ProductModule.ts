@@ -11,6 +11,7 @@ import {
     SearchProductByIdAppProvider, UpdateProductQuantityAppProvider
 } from './config/ProductProvider';
 import { ClientModule } from '../client/ClientModule';
+import { OrderModule } from '../order/OrderModule';
 
 const commandHandlers = [
     CreateProductCommandHandler,
@@ -24,6 +25,7 @@ const queryHandlers = [];
         CqrsModule,
         AuthenticationModule,
         ClientModule,
+        OrderModule,
     ],
     controllers: [
         CreateProductPostController,

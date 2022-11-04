@@ -16,6 +16,13 @@ export class ProductDto {
       clientId: string;
 
   @ApiProperty()
+  @IsNotEmpty({ message: ValidationMessagesConstants.ORDER_ID_REQUIRED })
+  @IsString({ message: ValidationMessagesConstants.ORDER_ID_MUST_BE_STRING })
+  @IsUUID(4, { message: ValidationMessagesConstants.INVALID_ORDER_ID_FORMAT })
+      orderId: string;
+
+
+  @ApiProperty()
   @IsString({ message: ValidationMessagesConstants.USER_ID_MUST_BE_STRING })
   @IsNotEmpty({ message: ValidationMessagesConstants.USER_ID_REQUIRED })
   @IsUUID(4, { message: ValidationMessagesConstants.INVALID_USER_ID_FORMAT })

@@ -8,7 +8,8 @@ import { CreateProductPostControllerResponse } from './CreateProductPostControll
 import { CreateProductPostControllerRequest } from './CreateProductPostControllerRequest';
 import { IUserDecorator, User } from '../../../../contexts/shared/infrastructure/auth/UserDecorator';
 import { CreateProductCommand } from '../../../../contexts/product/application/create/CreateProductCommand';
-import { ClientExceptionFilter } from "../../../client/config/ClientExceptionFilter";
+import { ClientExceptionFilter } from '../../../client/config/ClientExceptionFilter';
+import { OrderExceptionFilter } from '../../../order/config/OrderExceptionFilter';
 
 @Controller(ProductPrefixConstant.PREFIX)
 @ApiTags(ProductPrefixConstant.SWAGGER_TAG)
@@ -19,7 +20,7 @@ export class CreateProductPostController extends ApiController {
 
   @Post()
   @Auth()
-  @UseFilters(ProductExceptionFilter, ClientExceptionFilter)
+  @UseFilters(ProductExceptionFilter, ClientExceptionFilter, OrderExceptionFilter)
   @ApiAcceptedResponse({ type: CreateProductPostControllerResponse })
     async execute(
     @Body() body: CreateProductPostControllerRequest,
@@ -30,6 +31,7 @@ export class CreateProductPostController extends ApiController {
         await this.dispatch(new CreateProductCommand(
             user.userId,
             body.clientId,
+            body.orderId,
             body.name,
             body.catalogPrice,
             body.listPrice,

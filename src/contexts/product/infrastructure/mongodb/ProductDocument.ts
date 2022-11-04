@@ -22,6 +22,11 @@ export const ProductSchema = new Schema({
         required: true,
         index: true
     },
+    orderId: {
+        type: String,
+        required: true,
+        index: true,
+    },
     name: {
         type: String,
         required: true

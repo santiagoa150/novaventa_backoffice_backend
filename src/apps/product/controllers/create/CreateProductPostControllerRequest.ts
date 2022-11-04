@@ -10,6 +10,13 @@ export class CreateProductPostControllerRequest {
       clientId: string;
 
   @ApiProperty()
+  @IsNotEmpty({ message: ValidationMessagesConstants.ORDER_ID_REQUIRED })
+  @IsString({ message: ValidationMessagesConstants.ORDER_ID_MUST_BE_STRING })
+  @IsUUID(4, { message: ValidationMessagesConstants.INVALID_ORDER_ID_FORMAT })
+      orderId: string;
+
+
+  @ApiProperty()
   @IsNotEmpty({ message: ValidationMessagesConstants.PRODUCT_NAME_REQUIRED })
   @IsString({ message: ValidationMessagesConstants.PRODUCT_NAME_MUST_BE_STRING })
       name: string;

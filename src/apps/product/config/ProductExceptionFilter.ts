@@ -6,10 +6,16 @@ import { ProductNotCreatedException } from '../../../contexts/product/domain/exc
 import { ProductNotFoundException } from '../../../contexts/product/domain/exceptions/ProductNotFoundException';
 import { ProductFoundException } from '../../../contexts/product/domain/exceptions/ProductFoundException';
 import { ProductNotUpdatedException } from '../../../contexts/product/domain/exceptions/ProductNotUpdatedException';
+import { InvalidOrderIdException } from '../../../contexts/order/domain/exception/InvalidOrderIdException';
 
 export class ProductExceptionFilter extends GenericExceptionList {
     resolveStatus(exception: HttpException): ResolveStatusInterface {
         const exceptions = [
+            {
+                instance: InvalidOrderIdException,
+                status: HttpStatus.BAD_REQUEST,
+                code: HttpErrorCodesConstants.INVALID_ORDER_ID,
+            },
             {
                 instance: ProductFoundException,
                 status: HttpStatus.BAD_REQUEST,
