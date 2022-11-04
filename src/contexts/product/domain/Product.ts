@@ -6,13 +6,13 @@ import { ProductDto } from './ProductDto';
 
 export class Product implements DomainRoot {
 
-    private readonly productId: ProductId;
+    public readonly productId: ProductId;
     private readonly clientId: ClientId;
     private readonly userId: UserId;
     private readonly name: string;
     private readonly catalogPrice: number;
     private readonly listPrice: number;
-    private readonly quantity: number;
+    public readonly quantity: number;
     private readonly code: string;
     private readonly imageUrl: string;
 

@@ -20,7 +20,7 @@ export class SearchClientByIdApp {
     async execute(userId: UserId, clientId: ClientId, options?: IOptionsApp): Promise<Client> {
         this.logger.log(`[${this.execute.name}] INIT :: userId: ${userId.toString()} clientId: ${clientId.toString()}`);
         const client: Client = await this.repository.searchById(userId, clientId);
-        if (!userId && options && options.throwExceptionIfNoExists) {
+        if (!client && options && options.throwExceptionIfNoExists) {
             this.logger.error(`[${this.execute.name}] ERROR: ${HttpErrorMessagesConstants.CLIENT_NOT_FOUND}`);
             throw new ClientNotFoundException(HttpErrorMessagesConstants.CLIENT_NOT_FOUND);
         }

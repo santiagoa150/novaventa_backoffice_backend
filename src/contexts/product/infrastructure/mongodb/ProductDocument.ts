@@ -1,4 +1,4 @@
-import { ProductDto } from '../domain/ProductDto';
+import { ProductDto } from '../../domain/ProductDto';
 import { Document, Schema } from 'mongoose';
 
 export type ProductDocument = Product & Document;

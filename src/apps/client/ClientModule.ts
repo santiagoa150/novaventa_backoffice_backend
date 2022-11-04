@@ -52,6 +52,9 @@ const queryHandlers = [
         SearchClientByIdAppProvider,
         SearchAllClientsAppProvider,
         UpdateClientAppProvider
+    ],
+    exports: [
+        SearchClientByIdAppProvider,
     ]
 })
 export class ClientModule {
