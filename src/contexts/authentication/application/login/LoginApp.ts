@@ -49,7 +49,6 @@ export class LoginApp {
             active: data.active,
         };
         this.logger.log(`[${this.execute.name}] LOGIN FINISH :: payload: ${JSON.stringify(payload)}`);
-        console.log(this.jwt);
         return {accessToken: this.jwt.sign(payload)};
     }
 }

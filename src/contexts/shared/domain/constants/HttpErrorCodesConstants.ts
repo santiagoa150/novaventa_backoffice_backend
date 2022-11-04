@@ -16,4 +16,8 @@ export enum HttpErrorCodesConstants{
   CLIENT_NOT_CREATED = 14,
   CLIENT_NOT_FOUND = 17,
   CLIENT_NOT_UPDATED = 19,
+
+  ORDER_NOT_CREATED = 21,
+  ORDER_NOT_FOUND = 22,
+  ORDER_FOUND = 23,
 }

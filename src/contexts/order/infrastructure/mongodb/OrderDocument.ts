@@ -1,5 +1,6 @@
 import { OrderDto } from '../../domain/OrderDto';
 import { Document, Schema } from 'mongoose';
+import { OrderStatusConstants } from '../../domain/OrderStatusConstants';
 
 export type OrderDocument = Order & Document;
 
@@ -24,10 +25,12 @@ export const OrderSchema = new Schema({
     status: {
         type: String,
         required: true,
+        default: OrderStatusConstants.PENDING,
     },
     totalProducts: {
         type: Number,
         required: true,
+        default: 0,
     },
     campaign: {
         type: Number,

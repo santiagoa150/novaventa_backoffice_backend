@@ -3,8 +3,17 @@ import { MongoDbConnectionModule } from '../../contexts/shared/infrastructure/mo
 import { CqrsModule } from '@nestjs/cqrs';
 import { AuthenticationModule } from '../authentication/AuthenticationModule';
 import { OrderDocumentProvider } from '../../contexts/order/infrastructure/mongodb/OrderDocumentProvider';
+import { CreateOrderPostController } from './controllers/create/CreateOrderPostController';
+import { CreateOrderCommandHandler } from '../../contexts/order/application/create/CreateOrderCommandHandler';
+import {
+    CreateOrderAppProvider,
+    SearchOrderByDateAppProvider,
+    SearchOrderByStatusAppProvider
+} from './config/OrderProvider';
 
-const commandHandlers = [];
+const commandHandlers = [
+    CreateOrderCommandHandler,
+];
 
 const queryHandlers = [];
 
@@ -14,10 +23,16 @@ const queryHandlers = [];
         CqrsModule,
         AuthenticationModule,
     ],
+    controllers: [
+        CreateOrderPostController,
+    ],
     providers: [
         ...commandHandlers,
         ...queryHandlers,
         ...OrderDocumentProvider,
+        SearchOrderByStatusAppProvider,
+        SearchOrderByDateAppProvider,
+        CreateOrderAppProvider,
     ]
 })
 export class OrderModule {

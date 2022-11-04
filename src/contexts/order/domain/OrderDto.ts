@@ -41,6 +41,6 @@ export class OrderDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: ValidationMessagesConstants.ORDER_CAMPAIGN_REQUIRED })
-  @IsString({ message: ValidationMessagesConstants.ORDER_CAMPAIGN_MUST_BE_NUMBER })
+  @IsNumber({ allowNaN: false }, { message: ValidationMessagesConstants.ORDER_CAMPAIGN_MUST_BE_NUMBER })
       campaign: number;
 }
